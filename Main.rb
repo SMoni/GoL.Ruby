@@ -1,8 +1,6 @@
 require "ncurses"
 
 require "./Neighbourhood.rb"
-require "./StringToIntegerArray.rb"
-require "./IntegerArrayToString.rb"
 
 Array.include Neighbourhood
 
@@ -85,6 +83,9 @@ begin
     screen.getch
  
     alive = [ 
+        [5,5],
+        [6,5],
+        [7,5],
         [12,12], 
         [12,13],
         [12,14],
@@ -93,9 +94,7 @@ begin
         [13,14],
         [12,15],
         [13,13],
-        [5,5],
-        [6,5],
-        [7,5]
+        [14,15]
     ]
 
     (1..200).each do
