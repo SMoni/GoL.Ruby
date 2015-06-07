@@ -1,2 +1,2 @@
 # GoL.Ruby
-Just another implementation of Game Of Life
+Just another implementation of Game of Life
