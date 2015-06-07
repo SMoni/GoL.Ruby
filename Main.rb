@@ -84,9 +84,21 @@ begin
 
     screen.getch
  
-    alive = [[12,12], [13,12], [14,12], [12,11], [14,13], [13,14], [12,14], [13,13]]
+    alive = [ 
+        [12,12], 
+        [12,13],
+        [12,14],
+        [12,11],
+        [14,13],
+        [13,14],
+        [12,15],
+        [13,13],
+        [5,5],
+        [6,5],
+        [7,5]
+    ]
 
-    (1..100).each do
+    (1..200).each do
         alive = iterateThrough(alive)
         
         screen.clear
@@ -99,7 +111,7 @@ begin
         
     end
 
-    screen.addstr("done")
+    screen.mvaddstr(20, 1, "done")
 
     screen.getch
         
