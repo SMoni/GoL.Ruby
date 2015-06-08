@@ -60,12 +60,12 @@ def iterateThrough(alive)
         
     end
 
-    toStayAlive = neighbourhoods.select do |coordinates, neigbhours| 
-        alive.include?(coordinates) && @stayAlive.include?(neigbhours)
+    toStayAlive = neighbourhoods.select do |coordinates, neighbours| 
+        alive.include?(coordinates) && @stayAlive.include?(neighbours)
     end
 
-    toBeBorn = neighbourhoods.select do |coordinates, neigbhours| 
-        !alive.include?(coordinates) && @born.include?(neigbhours)
+    toBeBorn = neighbourhoods.select do |coordinates, neighbours| 
+        !alive.include?(coordinates) && @born.include?(neighbours)
     end
 
     return toStayAlive.keys | toBeBorn.keys 
