@@ -5,19 +5,16 @@ require "./Neighbourhood.rb"
 Array.include Neighbourhood
 
 def initializeScreen
-
     Ncurses.initscr
-    Ncurses.noecho           # turn off input echoing
-    Ncurses.nonl             # turn off newline translation
-    Ncurses.cbreak           # provide unbuffered input
-    Ncurses.noecho           # turn off input echoing
-    Ncurses.nonl             # turn off newline translation
-    Ncurses.stdscr.intrflush(false) # turn off flush-on-interrupt
-    Ncurses.stdscr.keypad(true)     # turn on keypad mode
-
-
+    Ncurses.noecho
+    Ncurses.nonl
+    Ncurses.cbreak
+    Ncurses.noecho
+    Ncurses.nonl
+    Ncurses.stdscr.intrflush(false)
+    Ncurses.stdscr.keypad(true)
+    Ncurses.curs_set(0)
     return Ncurses.stdscr
-
 end
 
 def finalizeScreen
@@ -33,21 +30,12 @@ end
 
 def iterateThrough(alive)
 
-    neighbourhoods = Hash.new
+    neighbourhoods = Hash.new { |hash, key| hash[key] = 0 }
 
     alive.each do |item|
-        neighbourhood = @neighbourhoodFor.call(item)
-
-        neighbourhood.each do |neighbour|
-            
-            #I don't like that...
-            if neighbourhoods[neighbour] == nil
-                neighbourhoods[neighbour] = 0
-            end
-            
+        @neighbourhoodFor.call(item).each do |neighbour|
             neighbourhoods[neighbour] += 1
         end
-        
     end
 
     toStayAlive = neighbourhoods.select do |coordinates, neighbours| 
@@ -59,7 +47,6 @@ def iterateThrough(alive)
     end
 
     return toStayAlive.keys | toBeBorn.keys 
-
 end
 
 begin
@@ -69,21 +56,21 @@ begin
     screen.getch
  
     alive = [ 
-        [5,5],
-        [6,5],
-        [7,5],
-        [12,12], 
-        [12,13],
-        [12,14],
-        [12,11],
-        [14,13],
-        [13,14],
-        [12,15],
-        [13,13],
-        [14,15]
+        [15,25],
+        [16,25],
+        [17,25],
+        [22,32], 
+        [22,33],
+        [22,34],
+        [22,31],
+        [24,33],
+        [23,34],
+        [22,35],
+        [23,33],
+        [24,35]
     ]
 
-    (1..200).each do
+    (1..400).each do
         alive = iterateThrough(alive)
         
         screen.clear
@@ -102,5 +89,3 @@ begin
 ensure
     finalizeScreen()
 end
-
-
