@@ -4,18 +4,6 @@ require "./Neighbourhood.rb"
 
 Array.include Neighbourhood
 
-module Drawing
-
-    def drawBorder()
-        self.clear()
-        self.border(*([0]*8)) # calls WINDOW#border(0, 0, 0, 0, 0, 0, 0, 0)
-        self.move(3,3)
-        self.addstr("Press a key to continue")
-        self.getch()
-    end
-
-end
-
 def initializeScreen
 
     Ncurses.initscr
@@ -51,6 +39,8 @@ def iterateThrough(alive)
         neighbourhood = @neighbourhoodFor.call(item)
 
         neighbourhood.each do |neighbour|
+            
+            #I don't like that...
             if neighbourhoods[neighbour] == nil
                 neighbourhoods[neighbour] = 0
             end
@@ -73,13 +63,9 @@ def iterateThrough(alive)
 end
 
 begin
-
-    Object.include Drawing
-
     screen = initializeScreen()
 
     screen.addstr("start")
-
     screen.getch
  
     alive = [ 
@@ -111,7 +97,6 @@ begin
     end
 
     screen.mvaddstr(20, 1, "done")
-
     screen.getch
         
 ensure
