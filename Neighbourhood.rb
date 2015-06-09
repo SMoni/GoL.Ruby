@@ -10,7 +10,7 @@ module Neighbourhood
 
             result = Array.new(numberOfElements.last)
         
-            result.each_with_index do |item, index|
+            result.each_with_index do |_, index|
 
                 lastIndexOfCoordinates = coordinates.count - 1 
                 indexForDimension      = lastIndexOfDimensions
