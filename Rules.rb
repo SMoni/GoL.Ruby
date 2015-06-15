@@ -1,22 +1,16 @@
 module Rules
-
+ 
     def validate()
         alive          = self[0]
         neighbourhoods = self[1]
-        
-        result = neighbourhoods.select do |entry, neighbours| 
-            alive.include? entry
-        end     
-        
-        return result   
-    end
 
-    def validateWith(rule)
-        alive          = self[0]
-        neighbourhoods = self[1]
+        rules = [
+            lambda { |alive, key, value|  alive.include?(key) && [2,3].include?(value) },
+            lambda { |alive, key, value| !alive.include?(key) && [3]  .include?(value) }
+        ]
         
         result = neighbourhoods.select do |key, value| 
-            rule.call(alive, key, value)
+            rules.any? { |rule| rule.call(alive, key, value) }
         end     
         
         return result   
