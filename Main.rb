@@ -1,8 +1,10 @@
 require "ncurses"
 
 require "./Neighbourhood.rb"
+require "./Rules.rb"
 
 Array.include Neighbourhood
+Array.include Rules
 
 def initializeScreen
     Ncurses.initscr
@@ -24,8 +26,6 @@ def finalizeScreen
     Ncurses.endwin
 end
 
-@stayAlive        = [2, 3]
-@born             = [3]
 @neighbourhoodFor = [3,3].getNeighbourhood()
 
 def iterateThrough(alive)
@@ -38,15 +38,8 @@ def iterateThrough(alive)
         end
     end
 
-    toStayAlive = neighbourhoods.select do |coordinates, neighbours| 
-        alive.include?(coordinates) && @stayAlive.include?(neighbours)
-    end
-
-    toBeBorn = neighbourhoods.select do |coordinates, neighbours| 
-        !alive.include?(coordinates) && @born.include?(neighbours)
-    end
-
-    return toStayAlive.keys | toBeBorn.keys 
+    return [alive, neighbourhoods].validate().keys
+ 
 end
 
 begin
