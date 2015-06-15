@@ -10,16 +10,17 @@ class Suite < Test::Unit::TestCase
     end
 
     def test_IsEntryInBothLists
-        :entry
         
-        alive          = Array.new { :entry }
-        neighbourhoods = Hash.new  { |hash, key| hash[:entry] = 0 }
+        alive          = [ :entry ]
+        neighbourhoods = { :entry => 0 }
 
-        result = (alive, neighbourhoods).validate()
+        result = [alive, neighbourhoods].validate()
+
+        assert(result.include? :entry) 
     end
 
     def test_IsNeighbourhoodEntryInAliveList
-        #
+
     end
 
     def test_IsNeighbourhoodEntryNotInAliveList
