@@ -18,24 +18,55 @@ class Suite < Test::Unit::TestCase
 
         assert(result.include? :entry) 
     end
-
-    def test_IsNeighbourhoodEntryInAliveList
-
-    end
-
-    def test_IsNeighbourhoodEntryNotInAliveList
-        #
-    end
     
     def test_IsStayingAlive
+
+        isStayingAliveWithNumberOfNeighbours = [2,3]
+
+        isStayingAlive = lambda do |alive, key, value|
+            alive.include?(key) && isStayingAliveWithNumberOfNeighbours.include?(value)
+        end
+
+        alive          = [ :toStayAlive ]
+        neighbourhoods = { :toStayAlive => 2 }
+
+        result = [alive, neighbourhoods].validateWith(isStayingAlive)
+
+        assert(result.include? :toStayAlive) 
+    
+    end
+
+    def test_IsDying
+
+        isStayingAliveWithNumberOfNeighbours = [2,3]
+
+        isStayingAlive = lambda do |alive, key, value|
+            alive.include?(key) && isStayingAliveWithNumberOfNeighbours.include?(value)
+        end
+
+        alive          = [ :toDie ]
+        neighbourhoods = { :toDie => 4 }
+
+        result = [alive, neighbourhoods].validateWith(isStayingAlive)
+
+        assert(result.empty?) 
     
     end
     
     def test_IsBeBorn
-    
-    end
-    
-    def test_IsDying
+
+        isBeingBornWithNumberOfNeighbours = [3]
+
+        isBeingBorn = lambda do |alive, key, value|
+            !alive.include?(key) && isBeingBornWithNumberOfNeighbours.include?(value)
+        end
+
+        alive          = [ ]
+        neighbourhoods = { :toBeBorn => 3 }
+
+        result = [alive, neighbourhoods].validateWith(isBeingBorn)
+
+        assert(result.include? :toBeBorn) 
     
     end
 
