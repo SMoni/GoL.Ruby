@@ -2,9 +2,12 @@ require "ncurses"
 
 require "./Neighbourhood.rb"
 require "./Rules.rb"
+require "./Tools.rb"
 
-Array.include Neighbourhood
-Array.include Rules
+Array.include  Neighbourhood
+Array.include  Rules
+Array.include  IntegerArrayToString
+String.include StringToIntegerArray
 
 module Doing
 
@@ -15,8 +18,8 @@ module Doing
         neighbourhoods = Hash.new { |hash, key| hash[key] = 0 }
 
         self.each do |item|
-            neighbourhoodFor.call(item).each do |neighbour|
-                neighbourhoods[neighbour] += 1
+            neighbourhoodFor.call(item.asArray()).each do |neighbour|
+                neighbourhoods[neighbour.asString()] += 1
             end
         end
 
@@ -55,18 +58,18 @@ begin
     screen.getch
  
     alive = [ 
-        [15,35],
-        [16,35],
-        [17,35],
-        [22,42], 
-        [22,43],
-        [22,44],
-        [22,41],
-        [24,43],
-        [23,44],
-        [22,45],
-        [23,43],
-        [24,45]
+        [15,35].asString(),
+        [16,35].asString(),
+        [17,35].asString(),
+        [22,42].asString(), 
+        [22,43].asString(),
+        [22,44].asString(),
+        [22,41].asString(),
+        [24,43].asString(),
+        [23,44].asString(),
+        [22,45].asString(),
+        [23,43].asString(),
+        [24,45].asString()
     ]
 
     (1..400).each do
@@ -76,7 +79,8 @@ begin
         screen.clear
         
         alive.each do |coordinate|
-            screen.mvaddstr(coordinate[0], coordinate[1], "X")
+            asArray = coordinate.asArray()
+            screen.mvaddstr(asArray[0], asArray[1], "X")
         end
         
         screen.refresh

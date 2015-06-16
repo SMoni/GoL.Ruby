@@ -9,4 +9,3 @@ module StringToIntegerArray
         return self.split(",").map(&:to_i)
     end
 end
-
