@@ -6,6 +6,28 @@ require "./Rules.rb"
 Array.include Neighbourhood
 Array.include Rules
 
+module Doing
+
+    def refresh()
+
+        neighbourhoodFor = [3,3].getNeighbourhood()
+
+        neighbourhoods = Hash.new { |hash, key| hash[key] = 0 }
+
+        self.each do |item|
+            neighbourhoodFor.call(item).each do |neighbour|
+                neighbourhoods[neighbour] += 1
+            end
+        end
+
+        return [self, neighbourhoods].validate().keys
+     
+    end
+
+end
+
+Array.include Doing
+
 def initializeScreen
     Ncurses.initscr
     Ncurses.noecho
@@ -24,22 +46,6 @@ def finalizeScreen
     Ncurses.nocbreak
     Ncurses.nl
     Ncurses.endwin
-end
-
-@neighbourhoodFor = [3,3].getNeighbourhood()
-
-def iterateThrough(alive)
-
-    neighbourhoods = Hash.new { |hash, key| hash[key] = 0 }
-
-    alive.each do |item|
-        @neighbourhoodFor.call(item).each do |neighbour|
-            neighbourhoods[neighbour] += 1
-        end
-    end
-
-    return [alive, neighbourhoods].validate().keys
- 
 end
 
 begin
@@ -64,7 +70,8 @@ begin
     ]
 
     (1..400).each do
-        alive = iterateThrough(alive)
+        
+        alive = alive.refresh()
         
         screen.clear
         
