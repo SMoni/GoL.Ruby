@@ -58,19 +58,19 @@ begin
     screen.getch
  
     alive = [ 
-        [15,35].asString(),
-        [16,35].asString(),
-        [17,35].asString(),
-        [22,42].asString(), 
-        [22,43].asString(),
-        [22,44].asString(),
-        [22,41].asString(),
-        [24,43].asString(),
-        [23,44].asString(),
-        [22,45].asString(),
-        [23,43].asString(),
-        [24,45].asString()
-    ]
+        [15,35],
+        [16,35],
+        [17,35],
+        [22,42], 
+        [22,43],
+        [22,44],
+        [22,41],
+        [24,43],
+        [23,44],
+        [22,45],
+        [23,43],
+        [24,45]
+    ].map(&:asString)
 
     (1..400).each do
         
