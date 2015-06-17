@@ -54,23 +54,25 @@ end
 begin
     screen = initializeScreen()
 
+    # crappy initializing
+
+    getCell = lambda do 
+        [rand(40),rand(40)+25].asString()
+    end 
+    
+    alive = []
+    
+    while(alive.size() < 200) do
+        cell = getCell.call()
+        if (!alive.include?(cell))
+            alive << cell
+        end
+    end
+
+    # crappy initializing is over
+
     screen.addstr("start")
     screen.getch
- 
-    alive = [ 
-        [15,35],
-        [16,35],
-        [17,35],
-        [22,42], 
-        [22,43],
-        [22,44],
-        [22,41],
-        [24,43],
-        [23,44],
-        [22,45],
-        [23,43],
-        [24,45]
-    ].map(&:asString)
 
     (1..400).each do
         
