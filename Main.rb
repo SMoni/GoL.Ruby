@@ -3,56 +3,48 @@ require "ncurses"
 require "./Neighbourhood.rb"
 require "./Rules.rb"
 require "./Tools.rb"
+require "./Init.rb"
+
+module TalkToMe
+    def sayStart
+        self.mvaddstr(19, 1, "-------")
+        self.mvaddstr(20, 1, "|start|")
+        self.mvaddstr(21, 1, "-------")
+        self.getch
+    end
+
+    def sayDone
+        self.mvaddstr(19, 1, "------")
+        self.mvaddstr(20, 1, "|done|")
+        self.mvaddstr(21, 1, "------")
+        self.getch
+    end
+
+end
 
 Array.include  Neighbourhood
 Array.include  Rules
 Array.include  IntegerArrayToString
 String.include StringToIntegerArray
+Object.include TalkToMe
 
-module Doing
+@neighbourhoodFor = [3,3].getNeighbourhood()
 
-    def refresh()
+def refreshThis(array_)
 
-        neighbourhoodFor = [3,3].getNeighbourhood()
+    neighbourhoods = Hash.new { |hash, key| hash[key] = 0 }
 
-        neighbourhoods = Hash.new { |hash, key| hash[key] = 0 }
-
-        self.each do |item|
-            neighbourhoodFor.call(item.asArray()).each do |neighbour|
-                neighbourhoods[neighbour.asString()] += 1
-            end
+    array_.each do |item|
+        @neighbourhoodFor.call(item.asArray()).each do |neighbour|
+            neighbourhoods[neighbour.asString()] += 1
         end
-
-        return [self, neighbourhoods].validate().keys
-     
     end
 
+    return [array_, neighbourhoods].validate().keys
+ 
 end
 
-Array.include Doing
-
-def initializeScreen
-    Ncurses.initscr
-    Ncurses.noecho
-    Ncurses.nonl
-    Ncurses.cbreak
-    Ncurses.noecho
-    Ncurses.nonl
-    Ncurses.stdscr.intrflush(false)
-    Ncurses.stdscr.keypad(true)
-    Ncurses.curs_set(0)
-    return Ncurses.stdscr
-end
-
-def finalizeScreen
-    Ncurses.echo
-    Ncurses.nocbreak
-    Ncurses.nl
-    Ncurses.endwin
-end
-
-begin
-    screen = initializeScreen()
+def getAlive
 
     # crappy initializing
 
@@ -60,23 +52,30 @@ begin
         [rand(40),rand(40)+25].asString()
     end 
     
-    alive = []
+    result = []
     
-    while(alive.size() < 200) do
+    while(result.size() < 150) do
         cell = getCell.call()
-        if (!alive.include?(cell))
-            alive << cell
+        if (!result.include?(cell))
+            result << cell
         end
     end
 
+    return result
+
     # crappy initializing is over
 
-    screen.addstr("start")
-    screen.getch
+end
+
+begin
+    screen = initializeScreen()
+    screen.sayStart
+
+    alive = getAlive()
 
     (1..400).each do
         
-        alive = alive.refresh()
+        alive = refreshThis(alive)
         
         screen.clear
         
@@ -88,9 +87,8 @@ begin
         screen.refresh
         
     end
-
-    screen.mvaddstr(20, 1, "done")
-    screen.getch
+        
+    screen.sayDone
         
 ensure
     finalizeScreen()
