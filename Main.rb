@@ -44,34 +44,13 @@ def refreshThis(array_)
  
 end
 
-def getAlive
-
-    # crappy initializing
-
-    getCell = lambda do 
-        [rand(40),rand(40)+25].asString()
-    end 
-    
-    result = []
-    
-    while(result.size() < 150) do
-        cell = getCell.call()
-        if (!result.include?(cell))
-            result << cell
-        end
-    end
-
-    return result
-
-    # crappy initializing is over
-
-end
-
 begin
     screen = initializeScreen()
     screen.sayStart
 
-    alive = getAlive()
+    alive =  Array.new(160)
+        .map { [rand(40),rand(40)+25].asString() }
+        .uniq()
 
     (1..400).each do
         
