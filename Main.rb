@@ -48,20 +48,22 @@ begin
     screen = initializeScreen()
     screen.sayStart
 
-    alive =  Array.new(160)
+    alive =  (0..200)
         .map { [rand(40),rand(40)+25].asString() }
         .uniq()
 
-    (1..400).each do
+    drawCell = lambda do |coordinate|
+        asArray = coordinate.asArray()
+        screen.mvaddstr(asArray[0], asArray[1], "X")
+    end
+
+    (0..400).each do
         
         alive = refreshThis(alive)
         
         screen.clear
         
-        alive.each do |coordinate|
-            asArray = coordinate.asArray()
-            screen.mvaddstr(asArray[0], asArray[1], "X")
-        end
+        alive.each{ |coordinate| drawCell.call(coordinate) }
         
         screen.refresh
         
