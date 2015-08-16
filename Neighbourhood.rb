@@ -1,4 +1,8 @@
+require "./Elements.rb"
+
 module Neighbourhood
+
+    Array.include Elements
 
     def getNeighbourhood()
 
@@ -39,19 +43,5 @@ module Neighbourhood
             
         end
     end
-
-    def getNumberOfElements()
-
-        rank      = self.count
-        result    = Array.new(rank + 1)
-        result[0] = 1
-
-        (1..rank).each do |index|
-            result[index] = result[index - 1] * self[rank - index]
-        end
-
-        return result
-    end
-
 end
 

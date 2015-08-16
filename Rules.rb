@@ -1,20 +1,32 @@
 module Rules
  
-    def validate()
+    def validate
         alive          = self[0]
         neighbourhoods = self[1]
 
+        neighboursForStayingAlive  = [2, 3]
+        neighboursForBeingBorn     = [3]
+
+        isInAlive = lambda { |anArray| 
+            lambda { |thisEntry| anArray.include?(thisEntry) } 
+        }.call(alive)
+        
+        stayingAlive = lambda { |coordinates, neighbours|  
+            isInAlive.call(coordinates) && neighboursForStayingAlive.include?(neighbours) 
+        } 
+        
+        willBeBorn = lambda { |coordinates, neighbours| 
+            !isInAlive.call(coordinates) && neighboursForBeingBorn.include?(neighbours)
+        }
+
         rules = [
-            lambda { |alive, key, value|  alive.include?(key) && [2,3].include?(value) },
-            lambda { |alive, key, value| !alive.include?(key) && [3]  .include?(value) }
+            stayingAlive,
+            willBeBorn
         ]
         
-        result = neighbourhoods.select do |key, value| 
-            rules.any? { |rule| rule.call(alive, key, value) }
+        neighbourhoods.select do |key, value| 
+            rules.any? { |rule| rule.call(key, value) }
         end     
-        
-        return result   
     end
-
 
 end
