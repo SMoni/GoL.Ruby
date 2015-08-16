@@ -1,22 +1,22 @@
 module Rules
+
+    @@neighboursForStayingAlive  = [2, 3]
+    @@neighboursForBeingBorn     = [3]
  
     def validate
         alive          = self[0]
         neighbourhoods = self[1]
-
-        neighboursForStayingAlive  = [2, 3]
-        neighboursForBeingBorn     = [3]
 
         isInAlive = lambda { |anArray| 
             lambda { |thisEntry| anArray.include?(thisEntry) } 
         }.call(alive)
         
         stayingAlive = lambda { |coordinates, neighbours|  
-            isInAlive.call(coordinates) && neighboursForStayingAlive.include?(neighbours) 
+            isInAlive.call(coordinates) && @@neighboursForStayingAlive.include?(neighbours) 
         } 
         
         willBeBorn = lambda { |coordinates, neighbours| 
-            !isInAlive.call(coordinates) && neighboursForBeingBorn.include?(neighbours)
+            !isInAlive.call(coordinates) && @@neighboursForBeingBorn.include?(neighbours)
         }
 
         rules = [
